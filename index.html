@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVR MINES - Deposito</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html"><h1>VVR MINES</h1></a>
+        <ul>
+            <li><a href="#">Apostas Ao Vivo</a></li>
+            <li><a href="depositar.html">Depositar</a></li>
+            <i id="icon" class="fas fa-wallet"></i> R$<div id="deposito"> 0</div></b>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <!-- Slot 1 -->
+        <div class="slot-container">
+            <img src="img/Mines.jpg" alt="Slot 1" onclick="mines()">
+            <button class="play-button" onclick="mines()">Jogar</button>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Carregar valor inicial do depósito do sessionStorage
+        window.onload = function () {
+            var deposito = sessionStorage.getItem('deposito') || '0';
+            document.getElementById('deposito').innerHTML = parseFloat(deposito).toFixed(2);
+        }
+
+        function mines(){
+            var deposito = sessionStorage.getItem('deposito') || '0';
+            if (deposito == 0){
+                //Ir para a página do jogo
+                window.location.href = 'depositar.html';
+            }else{
+                window.location.href = 'jogo.html';
+            }
+        }
+
+
+    </script>
+
+
+    <div class="footer">
+        <p>&copy; 2024 VVR MINES. Todos os direitos reservados.</p>
+    </div>
+</body>
+
+</html>

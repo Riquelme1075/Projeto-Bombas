@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html">
+            <h1>VVR MINES</h1>
+        </a>
+        <ul>
+            <li><a href="#">Apostas Ao Vivo</a></li>
+            <li><a href="depositar.html">Depositar</a></li>
+            <i id="icon" class="fas fa-wallet"></i> R$<div id="deposito"> 0</div></b>
+        </ul>
+    </div>
+
+
+    <body>
+        <div class="credito_container">
+            <button onclick="sacar()">
+                <h1>SACAR</h1>
+                <div id="credito"></div>
+            </button>
+        </div>
+
+        <div class="proximo_clique">
+            <h1>PRÓXIMO CLIQUE: </h1>
+            <div id="proximo_clique"></div>
+        </div>
+
+
+        </div>
+        </div>
+
+
+
+
+
+        <!-- BOMBAS DO JOGO -->
+        <div class="conteudo_bomba">
+            <div class="celula">
+                <button onclick="posicao_1()" id="1" class="container_bomba">?</button>
+                <button onclick="posicao_2()" id="2" class="container_bomba">?</button>
+                <button onclick="posicao_3()" id="3" class="container_bomba">?</button>
+                <button onclick="posicao_4()" id="4" class="container_bomba">?</button>
+            </div>
+            <div class="celula">
+                <button onclick="posicao_5()" id="5" class="container_bomba">?</button>
+                <button onclick="posicao_6()" id="6" class="container_bomba">?</button>
+                <button onclick="posicao_7()" id="7" class="container_bomba">?</button>
+                <button onclick="posicao_8()" id="8" class="container_bomba">?</button>
+
+            </div>
+
+            <div class="celula">
+                <button onclick="posicao_9()" id="9" class="container_bomba">?</button>
+                <button onclick="posicao_10()" id="10" class="container_bomba">?</button>
+                <button onclick="posicao_11()" id="11" class="container_bomba">?</button>
+                <button onclick="posicao_12()" id="12" class="container_bomba">?</button>
+
+            </div>
+
+            <div class="celula">
+                <button onclick="posicao_13()" id="13" class="container_bomba">?</button>
+                <button onclick="posicao_14()" id="14" class="container_bomba">?</button>
+                <button onclick="posicao_15()" id="15" class="container_bomba">?</button>
+                <button onclick="posicao_16()" id="16" class="container_bomba">?</button>
+            </div>
+
+            <div class="multiplicador_container">
+                <h1>MULTIPLICADOR</h1>
+                <div id="multiplicador">1.05</div>
+
+            </div>
+
+            <div class="apostar">
+                <input type="number" id="valor_aposta">
+                <button id='apostar' onclick="apostar()">APOSTAR</button><br><br><br>
+            </div>
+
+
+            <script>
+
+                // Declarando valor  a var próximo clique
+                var proximo_clique = document.getElementById('proximo_clique');
+
+                // Carregar valor inicial do depósito do sessionStorage
+                window.onload = function () {
+                    var deposito = sessionStorage.getItem('deposito') || '0';
+                    document.getElementById('deposito').innerHTML = parseFloat(deposito).toFixed(2);
+
+                    var credito = parseFloat(sessionStorage.getItem('credito')) || 0;
+                    sessionStorage.setItem('credito', credito.toFixed(2));
+                    document.getElementById('credito').innerHTML = ("R$" + credito.toFixed(2));
+
+
+
+
+                }
+
+
+                function apostar() {
+                    // pegando o crédito
+                    var credito = sessionStorage.getItem('credito') || '0';
+                    credito = parseFloat(credito);
+                    if (credito == 0) {
+
+
+
+                        // Obter o valor da aposta
+                        var valor_aposta = document.getElementById('valor_aposta').value;
+                        sessionStorage.setItem('valor_aposta', valor_aposta);
+                        valor_aposta = parseFloat(valor_aposta);
+
+                        // Obter o valor atual do depósito
+                        var deposito = parseFloat(sessionStorage.getItem('deposito') || '0');
+
+                        if (valor_aposta > 0) {
+                            // Verificar se há saldo suficiente para a aposta
+                            if (valor_aposta <= deposito) {
+                                // Subtrair valor da aposta do depósito
+                                deposito -= valor_aposta;
+                                sessionStorage.setItem('deposito', deposito.toFixed(2));
+                                document.getElementById('deposito').innerHTML = deposito.toFixed(2);
+
+
+
+                                // Dando ao credito o valor da apostSomar os valores e atualizar a exibição
+                                credito = valor_aposta;
+                                sessionStorage.setItem('credito', credito.toFixed(2));
+                                document.getElementById('credito').innerHTML = credito.toFixed(2);
+
+
+
+                                // Carregar valor inicial do crédito do sessionStorage
+                                window.onload = function () {
+                                    var credito = sessionStorage.getItem('credito') || '0';
+                                    document.getElementById('credito').innerHTML = parseFloat(credito).toFixed(2);
+                                }
+
+                                //Ir para a página do jogo
+                                window.location.href = 'jogo.html';
+
+
+                            } else {
+                                Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Saldo insuficiente para realizar esta aposta.",
+                                footer: '<a href="depositar.html">DEPOSITAR</a>'
+                                });
+                                
+                            }
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "O valor da aposta deve ser positivo.",
+                                footer: '<a href="depositar.html">DEPOSITAR</a>'
+                                });
+
+
+                        }
+
+                    } else {
+                        Swal.fire({
+                        icon: "error",
+                        title: "Você já está jogando!",
+                        text: "Clique em sacar para dar novo valor de aposta",
+                        footer: '<a href="depositar.html">DEPOSITAR</a>'
+                        });
+                    }
+
+
+                }
+
+
+
+                // Obter o valor do multiplicador
+                var multiplicador = parseFloat(document.getElementById('multiplicador').innerText);
+
+                // pegando o crédito
+                var credito = sessionStorage.getItem('credito')
+                credito = parseFloat(credito);
+
+                // Dando ao credito o valor da apostSomar os valores e atualizar a exibição
+                sessionStorage.setItem('credito', credito.toFixed(2));
+                document.getElementById('credito').innerHTML = ("R$" + credito.toFixed(2));
+
+
+
+                // Função para sortear um número único
+                function sortear_numero_unico(sorteados, min, max) {
+                    var numero;
+                    do {
+                        numero = Math.floor(Math.random() * (max - min + 1)) + min;
+                    } while (sorteados.includes(numero));
+                    return numero;
+                }
+
+                // Definindo os limites
+                var min = 1;
+                var max = 16;
+
+                // Lista para armazenar os números sorteados
+                var sorteados = [];
+
+                // Sorteando os números únicos
+                var posicao_mina_1 = sortear_numero_unico(sorteados, min, max);
+                sorteados.push(posicao_mina_1);
+
+                var posicao_mina_2 = sortear_numero_unico(sorteados, min, max);
+                sorteados.push(posicao_mina_2);
+
+                var posicao_mina_3 = sortear_numero_unico(sorteados, min, max);
+                sorteados.push(posicao_mina_3);
+
+                var posicao_mina_4 = sortear_numero_unico(sorteados, min, max);
+                sorteados.push(posicao_mina_4);
+
+                console.log(posicao_mina_1, posicao_mina_2, posicao_mina_3, posicao_mina_4);
+
+
+
+
+
+
+
+
+                // Função para verificar posição da bomba
+                function resultado(posicao) {
+                //Verificando se o usuário fez a aposta
+                if (credito > 0){
+                    document.getElementById(posicao).disabled = true; //Bloqueando usuário de clicar 2x
+
+
+                    //Verificando se usuário ganhou ou perdeu
+                    if (posicao_mina_1 == posicao || posicao_mina_2 == posicao || posicao_mina_3 == posicao || posicao_mina_4 == posicao) {
+
+                        const todosBotoes = document.querySelectorAll('button:not(#apostar)'); //Bloqueando todos os botões menos o apostar
+
+                        // Desabilitando cada botão selecionado
+                        todosBotoes.forEach(botao => {
+                            botao.disabled = true;
+                        });
+
+                        document.getElementById(posicao).style.backgroundImage = "url('img/explosao.png')"; //Mudando cor de background caso perca
+                        document.getElementById(posicao).innerText = "";
+
+
+                        multiplicador = 1.1; // Voltando para o valor original do multiplicador
+                        document.getElementById('multiplicador').innerText = multiplicador.toFixed(2); // mundando o texto para o novo valor atual
+
+                        credito = 0 // Zerando o crédito
+                        //Armazenar o novo valor atualizado no sessionStorage
+                        sessionStorage.setItem('credito', credito.toFixed(2));
+                        document.getElementById('credito').innerText = ("R$" + credito.toFixed(2)); //Atualizando o novo crédito atual
+
+
+                        //Valor do próximo clique
+                        proximo_clique.innerHTML = (0.00).toFixed(2)
+
+                        
+
+                        //Mostrar posição de tudo
+                        mostrar_posicao(posicao)
+
+                    } else {
+
+                        multiplicador = parseFloat(multiplicador); //recebendo valor do multiplicador
+
+                        // Obter o valor atual do depósito exibido
+                        credito = parseFloat(credito);
+
+                        // Somar os valores e atualizar a exibição
+                        credito *= multiplicador;
+                        //Armazenar o novo valor atualizado no sessionStorage
+                        sessionStorage.setItem('credito', credito.toFixed(2));
+                        document.getElementById('credito').innerHTML = ("R$" + credito.toFixed(2));
+
+                        // Mudando cor do background
+                        document.getElementById(posicao).style.backgroundImage = "url('img/moeda mines.png')";
+                        document.getElementById(posicao).style.border = "7px solid purple"; //Colocando borda na moeda, la ele
+                        document.getElementById(posicao).innerText = "";
+
+                        //adicionando valor no multiplicador
+                        multiplicador += 0.1;
+                        document.getElementById('multiplicador').innerText = multiplicador.toFixed(2);
+
+                        //Valor do próximo clique
+                        proximo_clique.innerHTML = (multiplicador * credito).toFixed(2)
+
+
+
+                    }
+                }else{
+                    Swal.fire({
+                        icon: "error",
+                        title: "Você não realizou a aposta!",
+                        text: "Faça sua aposta e clique em apostar.",
+                        });
+                }
+
+                }
+
+
+                // Cliques nas posições
+                function posicao_1() {
+                    resultado(1)
+                }
+
+                function posicao_2() {
+                    resultado(2)
+                }
+
+                function posicao_3() {
+                    resultado(3)
+                }
+
+                function posicao_4() {
+                    resultado(4)
+                }
+
+                function posicao_5() {
+                    resultado(5)
+                }
+
+                function posicao_6() {
+                    resultado(6)
+                }
+
+                function posicao_7() {
+                    resultado(7)
+                }
+
+                function posicao_8() {
+                    resultado(8)
+                }
+
+                function posicao_9() {
+                    resultado(9)
+                }
+
+                function posicao_10() {
+                    resultado(10)
+                }
+
+                function posicao_11() {
+                    resultado(11)
+                }
+
+                function posicao_12() {
+                    resultado(12)
+                }
+
+                function posicao_13() {
+                    resultado(13)
+                }
+
+                function posicao_14() {
+                    resultado(14)
+                }
+
+                function posicao_15() {
+                    resultado(15)
+                }
+
+                function posicao_16() {
+                    resultado(16)
+                }
+
+
+
+
+
+                //Mostrando posições de todas as bombas
+                function mostrar_posicao(posicao){
+                    setTimeout(() => {
+    
+                    for (var contador = 1; contador <= 16; contador++) {
+                        if (posicao_mina_1 == contador || posicao_mina_2 == contador || posicao_mina_3 == contador || posicao_mina_4 == contador ) {
+
+                            document.getElementById(contador).style.backgroundImage = "url('img/bomba mines.gif')";
+                            document.getElementById(contador).innerText = "";
+
+                        } else{
+                            // Mudando cor do background
+                            document.getElementById(contador).style.backgroundImage = "url('img/moeda mines.png')";
+                            document.getElementById(contador).innerText = "";
+                        }
+                    }
+                    document.getElementById(posicao).style.backgroundImage = "url('img/explosao.png')";
+                }, 700);
+                };
+
+
+
+
+
+
+
+
+
+                function sacar() {
+                    //Recuperar o valor atual do sessionStorage
+                    var credito = parseFloat(sessionStorage.getItem('credito')) || 0;
+                    var deposito = parseFloat(sessionStorage.getItem('deposito')) || 0;
+
+
+                    //Adicionar ao valor atual
+                    deposito += credito;
+
+                    if (credito > 0) {
+                        
+                        //Alerta do sweet alert
+                        Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Você sacou R$"+ credito.toFixed(2),
+                        showConfirmButton: false,
+                        timer: 1400
+});
+                    }
+
+                    //Armazenar o novo valor atualizado no sessionStorage
+                    sessionStorage.setItem('deposito', deposito.toFixed(2));
+
+                    //Atualizando crédito
+                    document.getElementById('deposito').innerText = deposito.toFixed(2);
+
+
+                    credito = 0
+                    //Armazenar o novo valor atualizado no sessionStorage
+                    sessionStorage.setItem('credito', credito.toFixed(2));
+
+                    //Atualizando crédito
+                    document.getElementById('credito').innerText = credito.toFixed(2);
+
+
+                    const todosBotoes = document.querySelectorAll('button:not(#apostar)'); //Bloqueando todos os botões menos o apostar
+
+                        // Desabilitando cada botão selecionado
+                        todosBotoes.forEach(botao => {
+                            botao.disabled = true;
+                        });
+
+
+                        mostrar_posicao()
+                }
+
+
+
+
+
+
+
+
+
+            </script>
+    </body>
+
+</html>

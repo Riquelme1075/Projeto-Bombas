@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVR MINES - Deposito</title>
+    <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html">
+            <h1>VVR MINES</h1>
+        </a>
+        <ul>
+            <li><a href="#">Apostas Ao Vivo</a></li>
+            <li><a href="depositar.html">Depositar</a></li>
+            <i id="icon" class="fas fa-wallet"></i> R$<div id="deposito"> 0</div></b>
+        </ul>
+    </div>
+
+    <div class="conteudo">
+
+        <div class="container">
+            <h2>DEPOSITO</h2>
+            <input type="number" id="valor_deposito">
+            <br><br>
+            <button onclick="depositar()">DEPOSITAR</button><br>
+            <br>
+            <a href="index.html"><b>VOLTAR</b></a>
+        </div>
+    </div>
+
+    <script>
+        // Carregar valor inicial do depósito do sessionStorage
+        window.onload = function () {
+            var deposito = sessionStorage.getItem('deposito') || '0';
+            document.getElementById('deposito').innerHTML = parseFloat(deposito).toFixed(2);
+        }
+
+        function depositar() {
+            // Obter o valor do depósito atual
+            var valor_deposito = document.getElementById('valor_deposito').value;
+            valor_deposito = parseFloat(valor_deposito);
+
+            // Obter o valor atual do depósito exibido
+            var deposito = sessionStorage.getItem('deposito') || '0';
+            deposito = parseFloat(deposito);
+
+            if (valor_deposito > 0){
+            // Somar os valores e atualizar a exibição
+            deposito += valor_deposito;
+            sessionStorage.setItem('deposito', deposito.toFixed(2));
+            document.getElementById('deposito').innerHTML = deposito.toFixed(2);
+
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Depositou R$"+valor_deposito.toFixed(2),
+                showConfirmButton: false,
+                timer: 1400
+            });
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 1400);
+        }else{
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Tá de brincadeira né, nós pensamos em tudo!",
+                footer: '<a href="depositar.html">DEPOSITAR</a>'
+                });
+
+        }
+
+        }
+
+
+    </script>
+
+    <div class="footer">
+        <p>&copy; 2024 VVR MINES. Todos os direitos reservados.</p>
+    </div>
+</body>
+
+</html>
